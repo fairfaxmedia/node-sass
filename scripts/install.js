@@ -87,29 +87,38 @@ function checkAndFetchBinaries() {
  */
 
 function fetch() {
-  var url = [
-    'https://raw.githubusercontent.com/sass/node-sass-binaries/v',
-    packageInfo.version, '/', process.sassBinaryName,
-    '/binding.node'
-  ].join('');
-  var dir = path.join(__dirname, '..', 'vendor', process.sassBinaryName);
-  var dest = path.join(dir, 'binding.node');
 
-  mkdirp(dir, function(err) {
-    if (err) {
-      console.error(err);
-      return;
-    }
+  // We need to fetch all of the possible binaries for this release, as
+  // we're storing this module in version control, and don't know which
+  // architecture it will be used on.
+  var binaries = packageInfo.binaries;
 
-    download(url, dest, function(err) {
-      if (err) {
-        console.error(err);
-        return;
-      }
+  forEach(function(binary){
+      var url = [
+        'https://raw.githubusercontent.com/sass/node-sass-binaries/v',
+        packageInfo.version, '/', binary,
+        '/binding.node'
+      ].join('');
+      var dir = path.join(__dirname, '..', 'vendor', binary);
+      var dest = path.join(dir, 'binding.node');
 
-      console.log('Binary downloaded and installed at ' + dest);
-    });
+      mkdirp(dir, function(err) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        download(url, dest, function(err) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          console.log('Binary downloaded and installed at ' + dest);
+        });
+      });
   });
+
 }
 
 /**
