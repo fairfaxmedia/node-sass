@@ -72,9 +72,9 @@ function applyProxy(options, cb) {
 
 function checkAndFetchBinaries() {
   fs.exists(path.join(__dirname, '..', 'vendor', process.sassBinaryName), function (exists) {
-    if (exists) {
-      return;
-    }
+    //if (exists) {
+    //  return;
+    //}
 
     fetch();
   });
