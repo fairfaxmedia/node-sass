@@ -93,7 +93,7 @@ function fetch() {
   // architecture it will be used on.
   var binaries = packageInfo.binaries;
 
-  forEach(function(binary){
+  binaries.forEach(function(binary){
       var url = [
         'https://raw.githubusercontent.com/sass/node-sass-binaries/v',
         packageInfo.version, '/', binary,
